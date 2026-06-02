@@ -1,23 +1,51 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkPlus, Link2, LoaderCircle, Plus } from "lucide-react";
+import { AlertCircle, BookmarkPlus, Link2, LoaderCircle, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 type BookmarkFormProps = {
   onCreated: (title: string) => void;
+  onNotify?: (message: string, type?: "success" | "error") => void;
 };
 
-export function BookmarkForm({ onCreated }: BookmarkFormProps) {
+function isValidUrl(value: string) {
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+export function BookmarkForm({ onCreated, onNotify }: BookmarkFormProps) {
   const [url, setUrl] = useState("");
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [urlAlert, setUrlAlert] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setUrlAlert(null);
+
+    const trimmedUrl = url.trim();
+    if (!trimmedUrl) {
+      const message = "Please enter a link URL.";
+      setUrlAlert(message);
+      onNotify?.(message, "error");
+      return;
+    }
+
+    if (!isValidUrl(trimmedUrl)) {
+      const message = "Please enter a valid URL (e.g. https://react.dev/learn).";
+      setUrlAlert(message);
+      onNotify?.(message, "error");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -35,13 +63,16 @@ export function BookmarkForm({ onCreated }: BookmarkFormProps) {
 
       setUrl("");
       setNote("");
+      setUrlAlert(null);
       onCreated(data.bookmark.title);
+      onNotify?.(`Saved "${data.bookmark.title}"`, "success");
     } catch (submitError) {
-      setError(
+      const message =
         submitError instanceof Error
           ? submitError.message
-          : "Failed to save bookmark",
-      );
+          : "Failed to save bookmark";
+      setError(message);
+      onNotify?.(message, "error");
     } finally {
       setLoading(false);
     }
@@ -64,7 +95,25 @@ export function BookmarkForm({ onCreated }: BookmarkFormProps) {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {urlAlert ? (
+          <div
+            role="alert"
+            className="mb-4 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/80 dark:text-amber-100"
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            <p className="flex-1">{urlAlert}</p>
+            <button
+              type="button"
+              onClick={() => setUrlAlert(null)}
+              className="rounded-lg p-1 text-amber-700 hover:bg-amber-100 dark:text-amber-300 dark:hover:bg-amber-900"
+              aria-label="Dismiss"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        ) : null}
+
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div>
             <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
               Link URL
@@ -74,11 +123,16 @@ export function BookmarkForm({ onCreated }: BookmarkFormProps) {
                 <Link2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
                 <Input
                   value={url}
-                  onChange={(event) => setUrl(event.target.value)}
+                  onChange={(event) => {
+                    setUrl(event.target.value);
+                    if (urlAlert) setUrlAlert(null);
+                  }}
                   placeholder="https://react.dev/learn"
                   className="h-11 pl-10"
-                  required
-                  type="url"
+                  type="text"
+                  inputMode="url"
+                  autoComplete="url"
+                  aria-invalid={urlAlert ? true : undefined}
                 />
               </div>
               <Button

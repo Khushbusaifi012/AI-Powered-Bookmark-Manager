@@ -230,8 +230,8 @@ export function Dashboard() {
 
           <div className="space-y-4 sm:space-y-5">
             <BookmarkForm
-              onCreated={(title) => {
-                notify(`Saved "${title}"`);
+              onNotify={notify}
+              onCreated={() => {
                 void loadBookmarks();
               }}
             />
