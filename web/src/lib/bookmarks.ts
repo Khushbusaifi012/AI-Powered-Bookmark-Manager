@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { ensureDatabaseReady } from "@/lib/ensure-db";
 import { fetchPageMetadata } from "@/lib/metadata";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -10,6 +11,7 @@ export type BookmarkFilters = {
 };
 
 export async function listBookmarks(filters: BookmarkFilters = {}) {
+  await ensureDatabaseReady();
   const where: Prisma.BookmarkWhereInput = {
     isArchived: filters.archived ?? false,
   };
@@ -40,6 +42,7 @@ export async function listBookmarks(filters: BookmarkFilters = {}) {
 }
 
 export async function getBookmarkStats() {
+  await ensureDatabaseReady();
   const [total, favorites, archived] = await Promise.all([
     db.bookmark.count({ where: { isArchived: false } }),
     db.bookmark.count({ where: { isFavorite: true, isArchived: false } }),
@@ -50,6 +53,7 @@ export async function getBookmarkStats() {
 }
 
 export async function listCollections() {
+  await ensureDatabaseReady();
   return db.collection.findMany({
     include: {
       _count: {
@@ -67,6 +71,7 @@ export async function createBookmark(input: {
   title?: string;
   description?: string;
 }) {
+  await ensureDatabaseReady();
   const normalizedUrl = new URL(input.url).href;
   const metadata = input.title
     ? {
@@ -94,6 +99,7 @@ export async function updateBookmark(
   id: string,
   data: Prisma.BookmarkUpdateInput,
 ) {
+  await ensureDatabaseReady();
   return db.bookmark.update({
     where: { id },
     data,
@@ -102,6 +108,7 @@ export async function updateBookmark(
 }
 
 export async function refreshBookmarkMetadata(id: string) {
+  await ensureDatabaseReady();
   const bookmark = await db.bookmark.findUnique({ where: { id } });
   if (!bookmark) throw new Error("Bookmark not found");
 
@@ -120,10 +127,12 @@ export async function refreshBookmarkMetadata(id: string) {
 }
 
 export async function deleteBookmark(id: string) {
+  await ensureDatabaseReady();
   return db.bookmark.delete({ where: { id } });
 }
 
 export async function ensureDefaultCollection() {
+  await ensureDatabaseReady();
   const existing = await db.collection.findFirst({
     where: { name: "Inbox" },
   });

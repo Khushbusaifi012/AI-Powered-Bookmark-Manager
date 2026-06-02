@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+
+export const runtime = "nodejs";
 import { z } from "zod";
 import { deleteBookmark, updateBookmark } from "@/lib/bookmarks";
 

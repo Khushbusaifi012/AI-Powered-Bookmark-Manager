@@ -24,7 +24,4 @@ function createClient() {
 }
 
 export const db = globalForPrisma.db ?? createClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.db = db;
-}
+globalForPrisma.db = db;
