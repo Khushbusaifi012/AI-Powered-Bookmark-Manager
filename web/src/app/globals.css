@@ -19,8 +19,20 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #0f0f12;
+  --card-border: #27272a;
+  --muted: #a1a1aa;
+  --accent: #818cf8;
+  --accent-soft: #1e1b4b;
+  --sidebar: #0c0c0f;
+  --glow: rgba(129, 140, 248, 0.15);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #09090b;
     --foreground: #fafafa;
     --card: #0f0f12;

@@ -78,7 +78,7 @@ export function Sidebar({
               className={cn(
                 "flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm transition",
                 active
-                  ? "bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
+                  ? "bg-indigo-50 font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:ring-indigo-800"
                   : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900",
               )}
             >
@@ -113,7 +113,7 @@ export function Sidebar({
                 className={cn(
                   "flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm transition",
                   active
-                    ? "bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300"
+                    ? "bg-indigo-50 font-medium text-indigo-700 ring-1 ring-inset ring-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:ring-indigo-800"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900",
                 )}
               >

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link2, LoaderCircle, Plus, Sparkles } from "lucide-react";
+import { BookmarkPlus, Link2, LoaderCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -60,7 +60,7 @@ export function BookmarkForm({ onCreated }: BookmarkFormProps) {
             </p>
           </div>
           <div className="hidden rounded-2xl bg-indigo-50 p-3 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 sm:block">
-            <Sparkles className="h-5 w-5" />
+            <BookmarkPlus className="h-5 w-5" />
           </div>
         </div>
 

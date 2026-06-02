@@ -1,6 +1,7 @@
 "use client";
 
 import { BrainCircuit, Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type HeaderProps = {
   onMenuClick?: () => void;
@@ -37,8 +38,11 @@ export function Header({ onMenuClick, menuOpen }: HeaderProps) {
           </div>
         </div>
 
-        <div className="hidden rounded-full border border-zinc-200 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400 md:block">
-          Paste a URL → title & preview load automatically
+        <div className="flex items-center gap-2">
+          <div className="hidden rounded-full border border-zinc-200 px-3 py-1.5 text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400 md:block">
+            Paste a URL → title & preview load automatically
+          </div>
+          <ThemeToggle />
         </div>
       </div>
     </header>

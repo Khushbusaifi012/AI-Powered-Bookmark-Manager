@@ -168,6 +168,15 @@ function BookmarkHeader({
       <div className="min-w-0">
         {showDomainBadge ? (
           <div className="mb-1 flex flex-wrap items-center gap-2">
+            {bookmark.favicon ? (
+              <img
+                src={bookmark.favicon}
+                alt=""
+                className="h-4 w-4 rounded-sm"
+                width={16}
+                height={16}
+              />
+            ) : null}
             <Badge className="bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               {domain}
             </Badge>
