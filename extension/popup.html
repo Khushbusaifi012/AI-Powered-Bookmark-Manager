@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MindMark Saver</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>MindMark</h1>
+        <p>Save this page to your second brain</p>
+      </header>
+
+      <label for="apiUrl">API URL</label>
+      <input
+        id="apiUrl"
+        type="url"
+        value="http://localhost:3000"
+        placeholder="http://localhost:3000"
+      />
+
+      <label for="note">Note (optional)</label>
+      <textarea
+        id="note"
+        rows="3"
+        placeholder="Why are you saving this?"
+      ></textarea>
+
+      <button id="saveBtn" type="button">Save bookmark</button>
+      <p id="status" class="status"></p>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
