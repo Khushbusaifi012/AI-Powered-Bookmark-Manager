@@ -4,6 +4,7 @@ node_modules/
 # Environment & secrets (NEVER commit)
 .env
 .env.*
+.env.example
 
 # Local database (contains your saved bookmarks)
 *.db
