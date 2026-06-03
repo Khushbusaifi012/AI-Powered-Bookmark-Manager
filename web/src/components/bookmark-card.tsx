@@ -10,6 +10,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -233,6 +234,7 @@ export function BookmarkCard({
   onNotify,
 }: BookmarkCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const tags = parseTags(bookmark.tags);
   const domain = getDomainFromUrl(bookmark.url);
@@ -261,10 +263,7 @@ export function BookmarkCard({
     await patchBookmark({ note }, note ? "Note updated" : "Note removed");
   }
 
-  async function deleteBookmark() {
-    const confirmed = window.confirm(`Delete "${bookmark.title}"?`);
-    if (!confirmed) return;
-
+  async function confirmDelete() {
     setBusy(true);
     try {
       const response = await fetch(`/api/bookmarks/${bookmark.id}`, {
@@ -272,6 +271,7 @@ export function BookmarkCard({
       });
 
       if (!response.ok) throw new Error("Delete failed");
+      setDeleteOpen(false);
       onNotify("Bookmark deleted");
       onChange();
     } catch {
@@ -332,7 +332,12 @@ export function BookmarkCard({
         <Copy className="h-4 w-4" />
         <span className="hidden sm:inline">Copy</span>
       </Button>
-      <Button variant="ghost" size="sm" disabled={busy} onClick={deleteBookmark}>
+      <Button
+        variant="ghost"
+        size="sm"
+        disabled={busy}
+        onClick={() => setDeleteOpen(true)}
+      >
         <Trash2 className="h-4 w-4" />
         <span className="hidden sm:inline">Delete</span>
       </Button>
@@ -390,27 +395,46 @@ export function BookmarkCard({
     </>
   );
 
+  const deleteDialog = (
+    <ConfirmDialog
+      open={deleteOpen}
+      title="Delete bookmark?"
+      message={`"${bookmark.title}" will be removed permanently. This cannot be undone.`}
+      confirmLabel="Delete"
+      cancelLabel="Cancel"
+      loading={busy && deleteOpen}
+      onConfirm={confirmDelete}
+      onCancel={() => !busy && setDeleteOpen(false)}
+    />
+  );
+
   if (view === "list") {
     const thumb = <BookmarkListThumb bookmark={bookmark} />;
 
     return (
-      <Card className="group animate-slide-up p-3 transition hover:shadow-md sm:p-4">
-        {thumb ? (
-          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <div className="relative shrink-0">{thumb}</div>
-            <div className="min-w-0 flex-1">{content}</div>
-          </div>
-        ) : (
-          content
-        )}
-      </Card>
+      <>
+        <Card className="group animate-slide-up p-3 transition hover:shadow-md sm:p-4">
+          {thumb ? (
+            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <div className="relative shrink-0">{thumb}</div>
+              <div className="min-w-0 flex-1">{content}</div>
+            </div>
+          ) : (
+            content
+          )}
+        </Card>
+        {deleteDialog}
+      </>
     );
   }
 
   return (
-    <Card className="group animate-slide-up overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg">
-      <BookmarkImagePreview bookmark={bookmark} domain={domain} />
-      <div className="space-y-3 p-3 sm:space-y-0 sm:p-4">{content}</div>
-    </Card>
+    <>
+      <Card className="group animate-slide-up overflow-hidden transition hover:-translate-y-0.5 hover:shadow-lg">
+        <BookmarkImagePreview bookmark={bookmark} domain={domain} />
+        <div className="space-y-3 p-3 sm:space-y-0 sm:p-4">{content}</div>
+      </Card>
+      {deleteDialog}
+    </>
   );
 }
