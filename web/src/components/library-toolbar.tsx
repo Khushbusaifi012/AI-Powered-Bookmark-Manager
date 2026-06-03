@@ -41,7 +41,7 @@ export function LibraryToolbar({
           <select
             value={sort}
             onChange={(event) => onSortChange(event.target.value as SortOption)}
-            className="h-9 min-w-0 flex-1 rounded-xl border border-zinc-200 bg-white px-3 text-sm text-zinc-900 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 sm:max-w-[200px] dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+            className="mm-field h-9 min-w-0 flex-1 rounded-xl px-3 text-sm sm:max-w-[200px]"
           >
             {(Object.keys(sortLabels) as SortOption[]).map((key) => (
               <option key={key} value={key}>

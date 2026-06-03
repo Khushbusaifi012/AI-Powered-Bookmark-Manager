@@ -10,7 +10,7 @@ const variants = {
   primary:
     "bg-indigo-600 text-white hover:bg-indigo-500 shadow-sm shadow-indigo-600/20",
   secondary:
-    "border border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800",
+    "mm-surface text-[color:var(--foreground)] hover:bg-[color:var(--field-bg)]",
   ghost:
     "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100",
   danger:

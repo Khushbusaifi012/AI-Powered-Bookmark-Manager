@@ -74,10 +74,10 @@ export function StatsCards({
               <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div className="min-w-0 text-left">
-              <p className="truncate text-xs text-zinc-500 sm:text-sm dark:text-zinc-400">
+              <p className="truncate text-xs text-[color:var(--muted)] sm:text-sm">
                 {item.label}
               </p>
-              <p className="text-xl font-semibold tracking-tight text-zinc-950 sm:text-2xl dark:text-zinc-50">
+              <p className="text-xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-2xl">
                 {values[item.key]}
               </p>
             </div>
@@ -98,7 +98,7 @@ export function StatsCards({
             type="button"
             onClick={() => onFilterClick(item.filter!)}
             className={cn(
-              "overflow-hidden rounded-2xl border border-zinc-200 bg-white text-left transition hover:-translate-y-0.5 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950",
+              "mm-surface overflow-hidden rounded-2xl text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md",
               active && `ring-2 ${item.ring}`,
             )}
           >

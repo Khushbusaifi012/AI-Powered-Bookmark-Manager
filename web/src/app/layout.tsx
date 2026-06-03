@@ -26,12 +26,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} light h-full antialiased`}
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('mindmark-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');if(t==='light')document.documentElement.classList.add('light');}catch(e){}})();`,
+            __html: `(function(){try{var r=document.documentElement,t=localStorage.getItem('mindmark-theme');r.classList.remove('dark','light');if(t==='dark')r.classList.add('dark');else r.classList.add('light');}catch(e){document.documentElement.classList.add('light');}})();`,
           }}
         />
       </head>

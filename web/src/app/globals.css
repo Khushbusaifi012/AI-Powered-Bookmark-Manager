@@ -1,11 +1,18 @@
 @import "tailwindcss";
 
-:root {
-  --background: #f4f4f5;
-  --foreground: #09090b;
+/* Dark styles only when html has .dark — not from OS preference alone */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+html.light {
+  color-scheme: light;
+  --background: #f8fafc;
+  --foreground: #18181b;
   --card: #ffffff;
-  --card-border: #e4e4e7;
-  --muted: #71717a;
+  --card-border: #e0e7ff;
+  --field-bg: #f5f3ff;
+  --field-border: #c7d2fe;
+  --muted: #64748b;
   --accent: #6366f1;
   --accent-soft: #eef2ff;
   --sidebar: #ffffff;
@@ -20,10 +27,13 @@
 }
 
 html.dark {
+  color-scheme: dark;
   --background: #09090b;
   --foreground: #fafafa;
-  --card: #0f0f12;
-  --card-border: #27272a;
+  --card: #18181b;
+  --card-border: #3f3f46;
+  --field-bg: #27272a;
+  --field-border: #52525b;
   --muted: #a1a1aa;
   --accent: #818cf8;
   --accent-soft: #1e1b4b;
@@ -31,18 +41,47 @@ html.dark {
   --glow: rgba(129, 140, 248, 0.15);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --card: #0f0f12;
-    --card-border: #27272a;
-    --muted: #a1a1aa;
-    --accent: #818cf8;
-    --accent-soft: #1e1b4b;
-    --sidebar: #0c0c0f;
-    --glow: rgba(129, 140, 248, 0.15);
-  }
+/* Surfaces follow theme variables (fixes black fields in light mode) */
+.mm-surface {
+  background-color: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+}
+
+.mm-field {
+  background-color: var(--field-bg);
+  border: 1px solid var(--field-border);
+  color: var(--foreground);
+}
+
+.mm-field::placeholder {
+  color: var(--muted);
+}
+
+.mm-field:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+html.light .mm-surface {
+  background: linear-gradient(
+    145deg,
+    var(--card) 0%,
+    color-mix(in srgb, var(--accent-soft) 55%, var(--card)) 100%
+  );
+}
+
+html.light .mm-field {
+  background-color: var(--field-bg);
+}
+
+.mm-field:-webkit-autofill,
+.mm-field:-webkit-autofill:hover,
+.mm-field:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--field-bg) inset;
+  -webkit-text-fill-color: var(--foreground);
+  transition: background-color 9999s ease-out 0s;
 }
 
 body {

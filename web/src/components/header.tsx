@@ -10,7 +10,7 @@ type HeaderProps = {
 
 export function Header({ onMenuClick, menuOpen }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/75 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/75">
+    <header className="sticky top-0 z-40 border-b border-[color:var(--card-border)] bg-[color:color-mix(in_srgb,var(--card)_88%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex min-w-0 items-center gap-3">
           {onMenuClick ? (

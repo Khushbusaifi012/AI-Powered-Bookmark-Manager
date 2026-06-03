@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 type Theme = "light" | "dark";
 
 function applyTheme(theme: Theme) {
-  document.documentElement.classList.toggle("dark", theme === "dark");
-  document.documentElement.classList.toggle("light", theme === "light");
+  const root = document.documentElement;
+  root.classList.remove("dark", "light");
+  root.classList.add(theme);
   localStorage.setItem("mindmark-theme", theme);
 }
 
@@ -16,13 +17,7 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const stored = localStorage.getItem("mindmark-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial: Theme =
-      stored === "dark" || stored === "light"
-        ? stored
-        : prefersDark
-          ? "dark"
-          : "light";
+    const initial: Theme = stored === "dark" ? "dark" : "light";
     applyTheme(initial);
     setTheme(initial);
   }, []);
@@ -38,7 +33,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+      className="mm-field flex h-10 w-10 items-center justify-center rounded-xl text-[color:var(--muted)] transition hover:border-[color:var(--accent)] hover:text-[color:var(--accent)]"
     >
       {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
     </button>
